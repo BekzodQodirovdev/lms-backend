@@ -168,6 +168,15 @@ export class StudentController {
   getProfile(@UserID() id: string) {
     return this.studentService.getProfile(id);
   }
+  // no student
+  @Get('no-student')
+  @ApiOperation({ summary: 'Guruhga aʼzo bo‘lmagan studentlarni olish' })
+  @ApiQuery({ name: 'group_id', required: true, description: 'Guruh IDsi' })
+  @ApiResponse({ status: 200, description: 'Success' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  noStudent(@Query('group_id') groupId: string) {
+    return this.studentService.noStudent(groupId);
+  }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a student by ID' })

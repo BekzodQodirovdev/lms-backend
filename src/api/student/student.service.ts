@@ -15,7 +15,7 @@ import { GroupMembersService } from '../group-members/group-members.service';
 import { PaymentStudentService } from '../payment-for-student/payment-student.service';
 import { config } from 'src/config';
 import { FileService } from 'src/infrastructure/lib';
-import { UserGender } from 'src/common/enum';
+import { UserGender, UserRole } from 'src/common/enum';
 
 @Injectable()
 export class StudentService {
@@ -214,6 +214,29 @@ export class StudentService {
         data: students,
       }),
     );
+    return {
+      status: HttpStatus.OK,
+      message: 'success',
+      data: students,
+    };
+  }
+
+  // no student
+  async noStudent(groupId: string) {
+    const students = await this.prismaService.user.findMany({
+      where: {
+        role: UserRole.STUDENT,
+        group_members: {
+          none: {
+            group_id: groupId,
+          },
+        },
+      },
+      include: {
+        group_members: true,
+      },
+    });
+
     return {
       status: HttpStatus.OK,
       message: 'success',
